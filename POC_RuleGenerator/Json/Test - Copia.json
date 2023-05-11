@@ -1,0 +1,77 @@
+{
+  "Id": "test",
+  "Version": 1,
+  "DataType": "POC_RuleGenerator.model.DummyDataClass, POC_RuleGenerator",
+  "Steps": [
+    {
+      "Id": "step1",
+      "StepType": "POC_RuleGenerator.Steps.ExecuteOperation, POC_RuleGenerator",
+      "NextStepId": "ifStepFreePass",
+      "inputs": {
+        "InputParameters": {
+          "formula": "[BaseCharges]+[Comsumption]+[ComsumptionTaxes]+[BaseTaxes]",
+          "resultField": "Total"
+        }
+      }
+    },
+    {
+      "Id": "ifStepFreePass",
+      "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+      "NextStepId": "ifStepFiscalParadise",
+      "inputs": { "Condition": "data.FreePass==true" },
+      "Do": [
+        [
+          {
+            "Id": "IsACourtesyPass",
+            "StepType": "POC_RuleGenerator.Steps.ExecuteOperation, POC_RuleGenerator",
+            "inputs": {
+              "InputParameters": {
+                "formula": "[Total]-[BaseCharges]+[Comsumption]+[ComsumptionTaxes]+[BaseTaxes]",
+                "resultField": "Total"
+              }
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "Id": "ifStepFiscalParadise",
+      "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+      "NextStepId": "ifStepAllInclusive",
+      "inputs": { "Condition": "data.FiscalParadise==true" },
+      "Do": [
+        [
+          {
+            "Id": "IsFiscalParadise",
+            "StepType": "POC_RuleGenerator.Steps.ExecuteOperation, POC_RuleGenerator",
+            "inputs": {
+              "InputParameters": {
+                "formula": "[Total]-[BaseCharges]+[ComsumptionTaxes]",
+                "resultField": "Total"
+              }
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "Id": "ifStepAllInclusive",
+      "StepType": "WorkflowCore.Primitives.If, WorkflowCore",
+      "inputs": { "Condition": "data.AllInclusive==true" },
+      "Do": [
+        [
+          {
+            "Id": "IsAllInclusive",
+            "StepType": "POC_RuleGenerator.Steps.ExecuteOperation, POC_RuleGenerator",
+            "inputs": {
+              "InputParameters": {
+                "formula": "[Total]-[Comsumption]+[ComsumptionTaxes]",
+                "resultField": "Total"
+              }
+            }
+          }
+        ]
+      ]
+    }
+  ]
+}

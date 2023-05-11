@@ -1,0 +1,7 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/POC_RuleGenerator
+/POC_RuleGenerator/obj/*
+/POC_RuleGenerator/bin/Debug/net5.0
