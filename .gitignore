@@ -5,3 +5,4 @@
 /.vs/POC_RuleGenerator
 /POC_RuleGenerator/obj/*
 /POC_RuleGenerator/bin/Debug/net5.0
+/POC_RuleGenerator/bin/Debug/net7.0
